@@ -184,6 +184,7 @@
                 <a onclick="open_detail_tab('{{dining.name}}')">
                   <span>{{loop.index}}</span><span>{{dining.name}}</span>
                   <i
+                    id="{{dining.id}}"
                     class="fas fa-heart"
                     onclick="dislike_dining('{{dining.id}}')"
                   ></i>
