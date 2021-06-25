@@ -46,7 +46,6 @@
         <div class="dropdown">
           <button
             class="dropbtn button kwmenu"
-            onclick="location.href='/keyword'"
           >
             <span class="buttontext"><b>연세대</b> 의 키워드</span>
           </button>
@@ -583,7 +582,16 @@
         $("#detailsidebar").removeClass("active");
       }
     </script>
- 
+    <script>
+      var url = window.location.href;
+      var parsedUrl = url.split("isInterest=")[1];
+      if (parsedUrl && parsedUrl === "true") {
+        var keywordIndex = url.indexOf("keyword=");
+        var keywordEndIndex = url.indexOf("&score");
+        var keyword = decodeURI(url.slice(keywordIndex+8, keywordEndIndex));
+        getPlacesandDisplay(keyword);
+      }
+    </script>
     <script>
       function open_detail_tab(dining) {
         forDelete = document.getElementsByClassName("detailslidebar_wrap")[0];

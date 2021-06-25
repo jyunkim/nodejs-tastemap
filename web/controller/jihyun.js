@@ -121,6 +121,15 @@ exports.getDining = async (req, res, next) => {
         pages: pageValue,
         userInfo: req.user,
       });
+    } else if (req.query.isInterest === "true") {
+      res.status(200).render("main", {
+        diningList: dinings,
+        keywords: keywordValue,
+        scores: scoreValue,
+        pages: pageValue,
+        userInfo: req.user,
+        isInterset: "true",
+      });
     } else {
       res.status(200).json({
         diningList: dinings,
