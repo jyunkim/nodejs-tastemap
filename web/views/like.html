@@ -175,13 +175,24 @@
         <div class="dinings">
           {% for dining in diningList %}
             <div class="one_dining">
+              <script>
+              newUrl = decodeURIComponent("{{ dining.imgUrl }}");
+              fnameIndex = newUrl.indexOf("fname");
+              newUrl = newUrl.slice(46,);
+              </script>
               <img
-                src="../public/img/bg.jpeg"
+                class="{{dining.id}}"
                 style="width: 100px; height: 100px"
-                onclick="open_detail_tab('{{dining}}')"
               />
+              <script>
+                imgTag = document.getElementsByClassName("{{dining.id}}")[0];
+                imgTag.setAttribute("src",newUrl);
+                imgTag.addEventListener("click", function(){ open_detail_tab("{{ dining.id }}", "{{ dining.name}}", "{{ dining.imgUrl}}",
+                "{{dining.totalScore}}","{{dining.tasteScroe}}", "{{dining.priceScore}}", "{{dining.serviceScore}}",
+                "{{dining.moodScore}}","{{dining.address}}","{{dining.contact}}","{{dining.operatingHour}}")}, false);
+              </script>
               <div class="dining_name">
-                <a onclick="open_detail_tab('{{dining}}')">
+                <a >
                   <span>{{loop.index}}</span><span>{{dining.name}}</span>
                   <i
                     id="{{dining.id}}"
@@ -362,10 +373,15 @@
           oneDining = document.createElement("div");
           oneDining.setAttribute("class", "one_dining");
 
+          newUrl = decodeURIComponent(dining.imgUrl);
+          fnameIndex = newUrl.indexOf("fname");
+          newUrl = newUrl.slice(46,);
           diningImg = document.createElement("img");
-          diningImg.setAttribute("src", "../public/img/bg.jpeg");
+          diningImg.setAttribute("src", newUrl);
           diningImg.setAttribute("style", "width: 100px; height: 100px");
-          diningImg.addEventListener("click", function(){open_detail_tab(dining)}, false);
+          diningImg.addEventListener("click", function(){open_detail_tab(dining.id, dining.name, dining.imgUrl,
+            dining.totalScore, dining.tasteScore, dining.priceScore, dining.serviceScore, dining.moodScore,
+            dining.address, dining.contact, dining.operatingHour)}, false);
           oneDining.appendChild(diningImg);
           diningsDiv.appendChild(oneDining);
 
@@ -373,7 +389,9 @@
           diningName.setAttribute("class", "dining_name");
 
           aTag = document.createElement("a");
-          aTag.addEventListener("click", function(){open_detail_tab(dining)}, false);
+          aTag.addEventListener("click", function(){open_detail_tab(dining.id, dining.name, 
+            dining.totalScore, dining.tasteScore, dining.priceScore, dining.serviceScore, dining.moodScore,
+            dining.address, dining.contact, dining.operatingHour)}, false);
           
           diningNameNumber = document.createElement("span");
           diningNameNumber.textContent = number++;
@@ -499,7 +517,9 @@
     </script>
 
     <script>
-      function open_detail_tab(dining) {
+      function open_detail_tab(diningId, diningName, imgUrl, totalScore, tasteScore, priceScore, serviceScore, moodScore, 
+      address, contact, operatingHour) {
+        
         forDelete = document.getElementsByClassName("detailslidebar_wrap")[0];
         if (forDelete)
           forDelete.parentNode.removeChild(forDelete);
@@ -509,7 +529,7 @@
         diningsDiv.appendChild(detailWrap);
         detailNav = document.createElement("nav");
         detailNav.setAttribute("class","detailsidebar");
-        detailNav.setAttribute("id",dining.id);
+        detailNav.setAttribute("id",diningId);
         detailWrap.appendChild(detailNav);
 
         detailDiningDiv = document.createElement("div");
@@ -520,15 +540,18 @@
         detailOneDining.setAttribute("class","detail_one_dining");
         detailDiningDiv.appendChild(detailOneDining);
 
+        newUrl = decodeURIComponent(imgUrl);
+        fnameIndex = newUrl.indexOf("fname");
+        newUrl = newUrl.slice(46,);
         detailImg = document.createElement("img");
-        detailImg.setAttribute("src","../public/img/bg.jpeg");
+        detailImg.setAttribute("src",newUrl);
         detailImg.style.width = "100px";
         detailImg.style.height = "100px";
         detailOneDining.appendChild(detailImg);
 
         detailDiningName = document.createElement("div");
         detailDiningName.setAttribute("class","dining_name");
-        detailDiningName.innerText = dining.name;
+        detailDiningName.innerText = diningName;
         detailOneDining.appendChild(detailDiningName);
 
         detailDiningScore = document.createElement("div");
@@ -547,7 +570,7 @@
         detailDiningScore.appendChild(detailTotalImg);
 
         detailTotalScore = document.createElement("span");
-        detailTotalScore.innerText = dining.totalScore;
+        detailTotalScore.innerText = totalScore;
         detailDiningScore.appendChild(detailTotalScore);
 
         detailTasteImg = document.createElement("img");
@@ -557,7 +580,7 @@
         detailDiningScore.appendChild(detailTasteImg);
 
         detailTasteScore = document.createElement("span");
-        detailTasteScore.innerText = dining.tasteScore;
+        detailTasteScore.innerText = tasteScore;
         detailDiningScore.appendChild(detailTasteScore);
 
         detailPriceImg = document.createElement("img");
@@ -567,7 +590,7 @@
         detailDiningScore.appendChild(detailPriceImg);
 
         detailPriceScore = document.createElement("span");
-        detailPriceScore.innerText = dining.priceScore;
+        detailPriceScore.innerText = priceScore;
         detailDiningScore.appendChild(detailPriceScore);
 
         detailServiceImg = document.createElement("img");
@@ -577,7 +600,7 @@
         detailDiningScore.appendChild(detailServiceImg);
 
         detailServiceScore = document.createElement("span");
-        detailServiceScore.innerText = dining.serviceScore;
+        detailServiceScore.innerText = serviceScore;
         detailDiningScore.appendChild(detailServiceScore);
 
         detailMoodImg = document.createElement("img");
@@ -587,7 +610,7 @@
         detailDiningScore.appendChild(detailMoodImg);
 
         detailMoodScore = document.createElement("span");
-        detailMoodScore.innerText = dining.moodScore;
+        detailMoodScore.innerText = moodScore;
         detailDiningScore.appendChild(detailMoodScore);
 
         detailInfo = document.createElement("div");
@@ -600,7 +623,7 @@
         detailDiningLoc.innerHTML = '<img src="../public/img/address.png" style="width: 12px" class="locimg"/>';
 
         detailDiningAddress = document.createElement("span");
-        detailDiningAddress.innerText = dining.address;
+        detailDiningAddress.innerText = address;
         detailDiningLoc.appendChild(detailDiningAddress);
         detailInfo.appendChild(detailDiningLoc);
 
@@ -609,7 +632,7 @@
         detailDiningContact.innerHTML = '<img src="../public/img/contact.png" style="width: 12px" class="contactimg"/>';
 
         detailDiningContactSpan = document.createElement("span");
-        detailDiningContactSpan.innerText = dining.contact;
+        detailDiningContactSpan.innerText = contact;
         detailDiningContact.appendChild(detailDiningContactSpan);
         detailInfo.appendChild(detailDiningContact);
 
@@ -618,21 +641,10 @@
         detailDiningOperatingHour.innerHTML = '<img src="../public/img/time.png" style="width: 12px" class="timeimg"/>';
 
         detailDiningOperatingHourSpan = document.createElement("span");
-        detailDiningOperatingHourSpan.innerText = dining.operatingHour;
+        detailDiningOperatingHourSpan.innerText = operatingHour;
         detailDiningOperatingHour.appendChild(detailDiningOperatingHourSpan);
         detailInfo.appendChild(detailDiningOperatingHour);
 
-        keywordInfo = document.createElement("div");
-        keywordInfo.setAttribute("class","keyword_info_dining");
-        keywordInfo.innerHTML = "<div><b>이 식당의 키워드</b></div>";
-        console.log(dining.Keywords);
-        for (const keyword of dining.Keywords) {
-          keywordSpan = document.createElement("span");
-          keywordSpan.setAttribute("id",keyword.id);
-          keywordSpan.innerText = keyword.name;
-          keywordInfo.appendChild(keywordSpan);
-        }
-        detailOneDining.appendChild(keywordInfo);
       }
     </script>
     
