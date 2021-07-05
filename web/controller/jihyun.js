@@ -158,7 +158,12 @@ exports.getUserLike = async (req, res, next) => {
         user,
         undefined
       );
-      let pageValue = [{ name: req.query.page, last: lastPage }];
+      let pageValue;
+      if (req.query.page) {
+        pageValue = [{ name: req.query.page, last: lastPage }];
+      } else {
+        pageValue = [{ name: 1, last: lastPage }];
+      }
       const dinings = await Dining.findAll({
         include: [
           { model: Keyword },
@@ -177,7 +182,7 @@ exports.getUserLike = async (req, res, next) => {
         res.status(200).render("like", {
           diningList: dinings,
           scores: scoreValue,
-          pages: 1,
+          pages: pageValue,
           userInfo: req.user,
         });
       } else {

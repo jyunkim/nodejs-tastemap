@@ -7,6 +7,7 @@
     <title>TasteMap</title>
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="../public/main.css" />
+    <link rel="stylesheet" type="text/css" href="../public/main2.css" />
     <!-- 웹 폰트 -->
     <link
       href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
@@ -37,24 +38,6 @@
   </head>
   <body>
     <div class="container">
-      <div class="info-container">
-        <div class="logo-box">
-          <img src="../public/img/logo1.png" class="logo" />
-          <span class="tastemap">Taste<strong>Map</strong></span>
-        </div>
-
-        <div class="dropdown">
-          <button
-            class="dropbtn button kwmenu"
-            onclick="location.href='/keyword'"
-          >
-            <span class="buttontext"><b>찜한</b> 식당</span>
-          </button>
-          <button class="button kwmenu" onclick="location.href='/user/keyword'">
-            <span class="buttontext"><b>맛집</b> 리스트</span>
-          </button>
-        </div>
-      </div>
       <div class="map-container">
         <div class="dropdown scoremenu">
           <button
@@ -125,7 +108,7 @@
               <button
                 class="dropbtn button loginsectionbtn"
                 style="width: 95px"
-                onclick="location.href='/user/like'"
+                onclick="location.href='/dining'"
               >
                 <span class="buttontext"
                   ><img src="../public/img/like.png" class="icon" /> 찜한
@@ -172,6 +155,25 @@
     </div>
     <div id="wrap">
       <nav id="sidebar">
+        <div class="info-container">
+          <div class="logo-box">
+            <img src="../public/img/logo1.png" class="logo" />
+            <span class="tastemap">Taste<strong>Map</strong></span>
+          </div>
+  
+          <div class="dropdown dropdownleft">
+            <button
+              class="dropbtn button kwmenu"
+            >
+              <span class="buttontext"><b>찜한</b> 식당</span>
+            </button>
+            <div class="dropdown-content">
+              <button class="button kwmenu" onclick="location.href='/dining'">
+                <span class="buttontext"><b>맛집</b> 리스트</span>
+              </button>
+            </div>
+          </div>
+        </div>
         <div class="dinings">
           {% for dining in diningList %}
             <div class="one_dining">
@@ -212,13 +214,15 @@
           {% endfor %}
         </div>
         <div id="pagination" style="text-align: center">
-          <a onclick="getPlacesandDisplay('{{pages-1}}')">
+          {% for page in pages %}
+          <a onclick="getPlacesandDisplay('{{page.name-1}}')">
             <img src="../public/img/previous.png" />
           </a>
-          <span>{{ pages }}</span>
-          <a onclick="getPlacesandDisplay('{{pages+1}}')">
+          <span>{{ page.name }}</span>
+          <a onclick="getPlacesandDisplay('{{page.name+1}}')">
             <img src="../public/img/next.png" />
           </a>
+          {% endfor %}
         </div>
       </nav>
     </div>
