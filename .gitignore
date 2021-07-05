@@ -1,3 +1,6 @@
+crawler/
+data/
+
 # Logs
 logs
 *.log
